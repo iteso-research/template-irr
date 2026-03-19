@@ -1,0 +1,358 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% style/iteso-phdengsci.def
+%%
+%% Common style definitions for the Doctoral Program in Engineering
+%% Sciences at ITESO.  This file is loaded by iteso-irr.cls via \input.
+%%
+%% Contains:  package loading, page geometry, header/footer setup,
+%%            section formatting, caption styles, metadata commands,
+%%            cover page and first page layout, and list environments.
+%%
+%% *** LICENSE ***
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either
+%% version 1.3c of this license or (at your option) any later
+%% version.  The latest version of this license is in
+%%   https://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of
+%% LaTeX version 2008 or later.
+%%
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is:
+%% J.Francisco Munoz-Elguezabal - franciscome@iteso.mx
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ProvidesFile{iteso-phdengsci.def}[2026/03/31 v2.0
+  Style definitions for ITESO PhD Eng Sc internal research reports]
+
+%% =====================================================================
+%% PACKAGES
+%% =====================================================================
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{mathptmx}               % Times Roman for text and math
+\RequirePackage[letterpaper,
+                top=1.0in,
+                bottom=1.0in,
+                left=1.0in,
+                right=1.0in]{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{bm}                     % Bold math symbols
+\RequirePackage{titlesec}
+\RequirePackage{enumitem}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+
+% hyperref: colorlinks must be a load-time option because it rewrites the
+% internal DVI special mechanism at initialisation.  Passing it later via
+% \hypersetup has no effect and triggers a warning.
+\RequirePackage[colorlinks]{hyperref}
+
+\RequirePackage{url}
+\RequirePackage{xcolor}
+\RequirePackage{etoolbox}
+\RequirePackage{setspace}
+\RequirePackage{indentfirst}
+\RequirePackage{cite}                    % IEEE-style compressed citations
+\RequirePackage{footmisc}
+\RequirePackage{lastpage}
+
+%% Algorithm pseudocode support
+\RequirePackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+%% Source code listings with syntax highlighting
+\RequirePackage{listings}
+\lstset{
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color{gray},
+  stringstyle=\color{black},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=8pt,
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  captionpos=b,
+  aboveskip=10pt,
+  belowskip=6pt,
+}
+
+%% =====================================================================
+%% METADATA INTERFACE
+%% =====================================================================
+%% Authors declare metadata in main.tex; these commands store the values
+%% and make them available to the cover page, first page, and headers.
+
+\newcommand{\ReportTitle}[1]{\gdef\irr@title{#1}}
+\newcommand{\ReportAuthors}[1]{\gdef\irr@authors{#1}}
+\newcommand{\ReportFileName}[1]{\gdef\irr@filename{#1}}
+\newcommand{\ReportDate}[1]{\gdef\irr@date{#1}}
+\newcommand{\CopyrightYear}[1]{\gdef\irr@copyrightyear{#1}}
+
+% Sensible defaults (overridden in main.tex)
+\gdef\irr@title{Report Title}
+\gdef\irr@authors{Author Name}
+\gdef\irr@filename{PhDEngScITESO-YY-NN-R}
+\gdef\irr@date{Month DD, YYYY}
+\gdef\irr@copyrightyear{YYYY}
+
+%% =====================================================================
+%% HYPERREF CONFIGURATION
+%% =====================================================================
+%% Deferred to \AtBeginDocument so that metadata set in the preamble
+%% of main.tex is already available.  Note: colorlinks was already
+%% passed as a package option above; it must not appear here again.
+
+\AtBeginDocument{%
+  \hypersetup{
+    linkcolor   = black,
+    citecolor   = black,
+    urlcolor    = black,
+    pdfauthor   = {\irr@authors},
+    pdftitle    = {\irr@title},
+    pdfsubject  = {Internal Research Report, PhD Program in Engineering
+                   Sciences, ITESO},
+  }%
+}
+
+%% =====================================================================
+%% VERTICAL PAGE LAYOUT
+%% =====================================================================
+
+\raggedbottom
+
+%% =====================================================================
+%% HORIZONTAL EMERGENCY STRETCH
+%% =====================================================================
+
+\emergencystretch=1em
+
+%% =====================================================================
+%% PAGE STYLE AND HEADERS / FOOTERS
+%% =====================================================================
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[C]{%
+  \footnotesize\textsc{Doctoral Program in Engineering Sciences at ITESO}}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancyfoot[LO]{%
+  \footnotesize ITESO \hfill \thepage{} \hfill \irr@filename}
+\fancyfoot[LE]{%
+  \footnotesize \irr@filename{} \hfill \thepage{} \hfill ITESO}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[C]{%
+    \footnotesize\textsc{Doctoral Program in Engineering Sciences at ITESO}}%
+  \fancyfoot[L]{%
+    \footnotesize ITESO \hfill \thepage{} \hfill \irr@filename}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+%% =====================================================================
+%% SECTION FORMATTING -- Roman numerals, centred, uppercase
+%% =====================================================================
+
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\titleformat{\section}[block]
+  {\normalfont\normalsize\bfseries\centering}
+  {\thesection.~}
+  {0pt}
+  {\MakeUppercase}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+
+\titleformat{\subsection}[block]
+  {\normalfont\normalsize\itshape}
+  {\thesubsection.~}
+  {0pt}
+  {}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+
+\newcommand{\sectionunnumbered}[1]{%
+  \section*{\MakeUppercase{#1}}%
+  \addcontentsline{toc}{section}{#1}%
+}
+
+%% =====================================================================
+%% FLOAT THRESHOLDS
+%% =====================================================================
+
+\setcounter{topnumber}{3}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+
+%% =====================================================================
+%% EQUATION NUMBERING
+%% =====================================================================
+
+\renewcommand{\theequation}{\arabic{equation}}
+
+%% =====================================================================
+%% FIGURE AND TABLE CAPTION FORMATTING
+%% =====================================================================
+
+\DeclareCaptionLabelFormat{ieeefig}{Fig.~#2}
+\captionsetup[figure]{
+  labelformat=ieeefig,
+  labelsep=period,
+  font=small,
+  justification=justified,
+  singlelinecheck=false
+}
+
+\DeclareCaptionLabelFormat{ieeetable}{\MakeUppercase{Table~\Roman{table}}}
+\captionsetup[table]{
+  labelformat=ieeetable,
+  labelsep=newline,
+  font={small,sc},
+  justification=centering,
+  singlelinecheck=false,
+  position=top
+}
+\renewcommand{\thetable}{\Roman{table}}
+
+%% =====================================================================
+%% PARAGRAPH FORMATTING
+%% =====================================================================
+
+\setlength{\parindent}{0.25in}
+\setlength{\parskip}{0pt}
+%\setstretch{1.0}
+\linespread{1.25}
+
+%% =====================================================================
+%% CENTERED BOX ENVIRONMENT
+%% =====================================================================
+
+%\framebox[1.8in]{\rule{0pt}{1.8in}\textit{ITESO Logo}}%
+
+%% =====================================================================
+%% LIST ENVIRONMENT -- lettered items: a), b), ...
+%% =====================================================================
+
+\newcommand{\lstindent}{0.50in}
+\newlist{letterlist}{enumerate}{1}
+\setlist[letterlist]{label=\alph*)~, leftmargin=\lstindent, nosep, itemsep=2pt}
+
+%% =====================================================================
+%% COVER PAGE
+%% =====================================================================
+
+\newcommand{\makecoverpage}{%
+  \thispagestyle{empty}%
+  \begin{center}
+    \vspace*{0.5in}%
+    {\large\bfseries\textsc{%
+      Doctoral Program in Engineering Sciences at ITESO}}%
+
+    \vspace{0.6in}%
+    {\normalsize\MakeUppercase{\irr@title}}%
+
+    \vspace{0.4in}%
+    {\normalsize \irr@authors}%
+
+    \vspace{0.3in}%
+    {\normalsize \irr@date}\\
+    {\normalsize Tlaquepaque, Mexico 45604}%
+
+    \vspace{0.3in}%
+    {\normalsize Doctoral Program in Engineering Sciences}\\
+    {\normalsize ITESO (\textit{Instituto Tecnol\'{o}gico y de Estudios
+    Superiores de Occidente})}%
+
+    \vspace{0.6in}%
+    % Insert ITESO logo here.
+    % Place the logo file (e.g., iteso-logo.png) in the project directory.
+    \includegraphics[width=3.0in]{iteso-logo.png}
+    
+    \vfill
+
+    {\normalsize \copyright~\irr@authors~\irr@copyrightyear}%
+
+    \vspace{0.3in}%
+    \parbox{0.9\textwidth}{\footnotesize\setstretch{1.0}%
+    This is an unofficial template developed by J. Francisco
+Munoz-Elguez\'{a}bal as an effort to modernize and improve the
+official and copyrighted version by Professor J. E. Rayas-Sanchez. This work
+is distributed under the LaTeX Project Public License, version
+1.3c or later (https://www.latex-project.org/lppl.txt). You are
+free to use, copy, modify, and distribute this template, provided
+that modified versions are distributed under a different name.
+Address inquiries to the author (franciscome@iteso.mx) or to the
+dedicated Github repository (https://github.com/iteso-research/template-irr).
+}%
+  \end{center}
+  \newpage
+  % Blank verso page after cover
+  \thispagestyle{empty}%
+  \null\newpage
+}
+
+%% =====================================================================
+%% FIRST PAGE (TITLE, KEYWORDS, ABSTRACT)
+%% =====================================================================
+
+\newcommand{\makefirstpage}[3]{%
+  % #1 = keywords
+  % #2 = abstract text
+  % #3 = funding footnote text
+  \thispagestyle{plain}%
+  \begin{center}
+    {\normalsize\MakeUppercase{\irr@title}}%
+
+    \vspace{0.25in}%
+    {\normalsize \irr@authors}%
+
+    \vspace{0.15in}%
+    {\normalsize \irr@date}%
+
+    \vspace{0.1in}%
+    {\normalsize
+      Doctoral Program in Engineering Sciences\\
+      ITESO (\textit{Instituto Tecnol\'{o}gico y de Estudios
+      Superiores de Occidente})\\
+      Tlaquepaque, Mexico 45604\\
+      E-mail: \href{mailto:franciscome@iteso.mx}{franciscome@iteso.mx}%
+    }%
+  \end{center}
+
+  \vspace{0.15in}%
+  \noindent\textbf{Keywords}~~{#1}%
+
+  \vspace{0.15in}%
+  \noindent\textbf{Abstract\protect\footnote{#3}}%
+
+  \vspace{4pt}%
+  \noindent{#2}%
+
+  \vspace{0.15in}%
+}
+
+%% =====================================================================
+%% PUBLIC ACCESSORS FOR METADATA
+%% =====================================================================
+
+\newcommand{\theReportTitle}{\irr@title}
+\newcommand{\theReportAuthors}{\irr@authors}
+\newcommand{\theReportFileName}{\irr@filename}
+\newcommand{\theReportDate}{\irr@date}
+\newcommand{\theCopyrightYear}{\irr@copyrightyear}
+
+\endinput 
