@@ -127,6 +127,31 @@ Any reference added or edited in Zotero is then automatically available in the L
 - **Overleaf**: No local installation needed. Upload the project and compile.
 - **Local**: A TeX Live or MiKTeX distribution with the following packages (all standard): `mathptmx`, `geometry`, `fancyhdr`, `titlesec`, `caption`, `subcaption`, `booktabs`, `hyperref`, `enumitem`, `algorithm2e`, `listings`, `amsmath`, `amssymb`, `bm`, `cite`, `setspace`, `indentfirst`.
 
+## Citation
+
+```
+[1] J. F. Munoz-Elguezábal, "An updated and open sourced LaTeX template for internal research reports
+    of the Doctoral Program in Engineering Sciences at ITESO," Internal Report PhDEngScITESO-26-00-R,
+    ITESO, Tlaquepaque, Mexico, Mar. 2026. [Online]. Available: https://github.com/iteso-research/template-irr
+```
+
+Bibtex for IEEE format
+
+```bibtex
+@misc{ref:munoz2026template,
+  author       = {J. F. Munoz-Elguez{\'a}bal},
+  title        = {{template-irr}: An Updated and Open Sourced {\LaTeX}
+                  Template for Internal Research Reports of the Doctoral
+                  Program in Engineering Sciences at {ITESO}},
+  year         = {2026},
+  month        = mar,
+  howpublished = {Internal Report PhDEngScITESO-26-00-R, ITESO,
+                  Tlaquepaque, Mexico. Software release v0.1.0},
+  note         = {[Online]. Available:
+                  \url{https://github.com/iteso-research/template-irr}},
+}
+```
+
 ## License
 
 This work is distributed under the [LaTeX Project Public License](https://www.latex-project.org/lppl.txt), version 1.3c or later. You are free to use, copy, modify, and distribute this template, provided that modified versions are distributed under a different name.
